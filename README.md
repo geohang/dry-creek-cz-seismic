@@ -108,10 +108,6 @@ seven profiles, a mean of 0.0051 s on the calibration lines and 0.0052 s on the
 held-out lines, and the 85 retained parameter sets. Figures are written to
 `_figures_local/` and are not tracked here.
 
-## Citation
-
-If you use this code or data, please cite the paper above and this repository.
-See `CITATION.cff`.
 
 ## License
 
