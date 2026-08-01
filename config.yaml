@@ -1,0 +1,145 @@
+site_name: Boise Dry Creek Experimental Watershed, Treeline area
+
+# Seismic line labels TL1-TL7 match the manuscript labels TL-1 through TL-7.
+# data/seismic/raw/FILE_MANIFEST.csv maps each label to its original field name.
+data_dir: data
+dem_file: data/terrain/Fill_cz_modeling_2.tif
+target_dem_resolution: 5.0
+
+discovery:
+  dem_patterns:
+  - '*.tif'
+  - '*.tiff'
+  seismic_extensions:
+  - .dat
+  - .txt
+  topography_keywords:
+  - topo
+  - topography
+  ignore_dirs:
+  # data/seismic/raw holds field records whose .dat and .txt files must never be
+  # picked up as modeling inputs. The modeling inputs are data/seismic/picks.
+  - raw
+  - outputs
+  - notebooks
+  - src
+  - .git
+  - .ipynb_checkpoints
+
+landlab_evolution:
+  flow_source: arcgis
+  flow_dem_file: data/terrain/Fill_cz_modeling_large.tif
+  flow_direction_file: data/terrain/Flow_Direction_large.tif
+  flow_accumulation_file: data/terrain/Flow_Accumulation_Flow_large.tif
+  channel_raster_file: data/terrain/RasterC_1200_large.tif
+  include_arcgis_outflow_nodes_as_channels: true
+  smooth_hand_sigma_cells: 1.0
+
+paper_inputs:
+  # Rendered output is written here and is excluded from version control.
+  figure_output_dir: _figures_local
+
+sceua_landlab_rd_rpv:
+  output_dir: outputs/dc_sceua_pc055_lb
+  parameters:
+    P0:
+      name: regolith_soil_production_maximum_rate_m_per_year
+      min: 3.0e-05
+      max: 0.0002
+    Hs:
+      name: regolith_soil_production_decay_depth_m
+      min: 0.125
+      max: 1.0
+    D:
+      name: regolith_hillslope_diffusivity_m2_per_year
+      min: 0.0001
+      max: 0.002
+    r:
+      name: rd_relief_ratio
+      min: 0.25
+      max: 0.95
+    phi_soil_top:
+      name: soil_surface_porosity
+      min: 0.45
+      max: 0.6
+    phi_weathered_top:
+      name: soil_weathered_interface_porosity
+      min: 0.25
+      max: 0.45
+    phi_fresh:
+      name: fresh_bedrock_porosity
+      min: 0.05
+      max: 0.1
+  landlab_soil:
+    regolith_initial_soil_depth_m: 1.9
+    regolith_minimum_soil_depth_m: 0.02
+    regolith_transport_decay_depth_m: 0.5
+    regolith_evolution_time_years: 6000.0
+    regolith_time_step_years: 25.0
+  rd_geometry: {}
+  forward_model:
+    bottom_m: 120.0
+    deep_cell_size_m: 10.0
+  rpv_params:
+    basis: Holbrook_Flinchum_granite_DEM_interface_porosity
+    soil:
+      Sw_top: 0.2
+      Sw_bottom: 0.35
+      critical_porosity: 0.55
+      hertz_mindlin_bound: lower
+    interface_porosity:
+      phi_fresh: 0.05
+      eps_m: 1.0e-06
+    weathered_bedrock:
+      phi_top: 0.3
+      phi_bottom: 0.05
+      Sw_top: 0.4
+      Sw_bottom: 1.0
+      alpha_top: 0.015
+      alpha_bottom: 0.015
+      Km: 51.69
+      Gm: 30.38
+      rho: 2631.0
+    fresh_bedrock:
+      phi: 0.05
+      Sw: 1.0
+      alpha: 0.015
+      Km: 51.69
+      Gm: 30.38
+      rho: 2631.0
+    vp_min: 300.0
+    vp_max: 4500.0
+    weathered_lookup_samples: 512
+  training_validation:
+    training_lines:
+    - TL1
+    - TL2
+    - TL3
+    - TL4
+    - TL5
+    validation_lines:
+    - TL6
+    - TL7
+  objective:
+    type: seismic_only
+    metric: normalized_rmse
+    sigma_t_seconds: 0.003
+    sigma_model_seconds: 0.003
+  sceua:
+    repetitions:
+      smoke: 20
+      balanced: 800
+      production: 2500
+    behavioral_top_fraction: 0.05
+    minimum_behavioral_sets: 20
+    random_seed: 42
+  propagation:
+    n_behavioral_sets: 200
+    dz: 1.0
+    selected_vp_depths_m:
+    - 2.0
+    - 10.0
+    - 25.0
+    - 40.0
+    - 80.0
+  fixed_parameters: {}

@@ -1,0 +1,25 @@
+# Rendered figures are produced by the notebooks and are not part of this
+# repository. Keep them out: some are tens of megabytes.
+_figures_local/
+outputs/**/figures/
+outputs/**/paper_figure_candidates/
+
+# Scratch calibration runs (smoke, balanced, and full re-runs)
+outputs/_scratch*/
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+.venv/
+
+# Editors and operating system
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Agent tooling
+.agent-config/
+agent-config.local.yaml

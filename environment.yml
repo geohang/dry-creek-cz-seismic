@@ -1,0 +1,29 @@
+name: dry-creek-cz
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - libblas=*=*openblas
+  - liblapack=*=*openblas
+  - numpy=2.2
+  - scipy=1.14
+  - pandas
+  - matplotlib
+  - cmcrameri
+  - rasterio
+  - xarray
+  - landlab=2.10.1
+  - jupyterlab
+  - nbclient
+  - nbformat
+  - pyyaml
+  - openpyxl
+  - pypdf
+  - spotpy
+  - pyvista
+  - pip
+  - pip:
+      - cutde==26.3.6
+      - pygimli==1.5.5
+      - pgcore==1.5.5.post1
+      - git+https://github.com/geohang/PyHydroGeophysX.git@23ab6bb15deb51a4007c6637d9969753fbca4697
